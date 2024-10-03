@@ -1,5 +1,5 @@
 """
-Definition of a simulation class for toy potential
+Definition of a simulation class 
 """
 import numpy as np
 import os
