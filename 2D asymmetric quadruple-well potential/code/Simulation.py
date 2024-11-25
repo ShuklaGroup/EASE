@@ -28,7 +28,7 @@ anh_cmap = ListedColormap(anh_colors)
 
 class ToySimulation:
     """
-    Simulation object triple-well 2D 
+    Simulation object asymmetric quadruple-well 2D 
     """
     def __init__(self,root_path, round_no=0, timestep = 1e-3, n_steps= 200):
         """Constructor.
@@ -37,7 +37,7 @@ class ToySimulation:
             Round number of adaptive sampling. 
         :param timestep: float * unit, default = 1e-15, The implementation uses an Euler-Maruyama integrator. (Deeptime Lib)
             Integration timestep  
-        :param n_steps: int, default = 100
+        :param n_steps: int, default = 200
             Number of integration steps between each evaluation. 
         :param root_path: str.
             Path to save round output
@@ -52,7 +52,6 @@ class ToySimulation:
 
     def get_initial_data(self, md_steps,initial_coords,num_reps = 1, seed = 42):
         """Generates initial (round=0) data.
-
 
         :param md_steps: int.
             Number of steps.
@@ -118,6 +117,9 @@ class ToySimulation:
         return clus_path, d_path
 
     def plot_trajs(self, trajs):
+        """
+        Helper function to plot trajectories, might need some tinkering
+        """
         system = self.model
         trajs = [pickle.load(open(f,'rb')) for f in trajs]
 
@@ -159,6 +161,10 @@ class ToySimulation:
         plt.show()
 
     def plot_trajs_animation(self, trajs):
+
+        """
+        Helper function to animate trajectories, might need some tinkering
+        """
         system = self.model
         trajs = [pickle.load(open(f, 'rb')) for f in trajs]
 
