@@ -180,7 +180,17 @@ class LambdaSampling(LeastCounts):
 
         return selected_states 
 
-    def _make_msm(self, dtrajs, best_lag = 1): #, lag = 10):
+    def _make_msm(self, dtrajs, best_lag = 1):
+        """Creates a Markov State Model
+
+        :param dtrajs: Python list.
+            List of paths to saved dtraj pickles.
+        :param best_lag: int.
+            Lagtime for the MSM
+        :return: count model object, MSM object.
+            Count Model from the transition count estimator (as implemented in Deeptime library), MSM object, the fitted MSM from the dtrajs
+        """
+
 
         dtrajs = list_to_trajs(dtrajs)
         count_model = TransitionCountEstimator(lagtime = best_lag,count_mode = 'sliding').fit_fetch(dtrajs)
@@ -189,6 +199,9 @@ class LambdaSampling(LeastCounts):
         return count_model , msm
 
     def _calculate_best_state(self,cm,msm,states):
+        """
+        Helper function to return idx of state with highest contribution to uncertainity (read paper)
+        """
 
         t_ij = msm.transition_matrix
         num_states = t_ij.shape[0]
