@@ -1,5 +1,5 @@
 """
-Definition of Policy class for EASE Adaptive Sampling
+Definition of Policy class for EASE (On the Fly) Adaptive Sampling
 """
 import pickle
 import numpy as np
@@ -35,7 +35,7 @@ from kmc_main_betas import kmc_run
 
 class Gradient:
     """
-    class to rank policies on the fly using EASE approach  (referred to here as gradient)
+    class to rank policies on the fly using EASE (On the fly) approach  (referred to here as gradient)
     """
 
     def __init__(self, root_path, round_no,kmc_beta):
