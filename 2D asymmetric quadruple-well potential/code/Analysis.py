@@ -19,7 +19,7 @@ import pandas as pd
 
 class Evaluate:
     """
-    evaluation class for each round of sampling
+    Evaluation class for each round of sampling
     """
     def __init__(self, root_path, round_no, num_reps, prev_best_data=None):
 
@@ -31,6 +31,17 @@ class Evaluate:
 
 
     def rank_policies(self,trajs,beta=0.5):
+        """Rank Policies.
+
+        :param traj_list: Python list.
+            List containing paths to trajectory pickles.
+        :param beta: float. default = 0.5.
+            Beta parameter to control balance between exploration and convergence 
+
+        :return  best_round_data, df_met: Python tuple.
+            Data sampled from the best (chosen) policy, pandas dataframe containing the results of the ranked policies
+            
+        """    
 
         df_met = self._metrics(trajs,beta)
         self.best_policy_name = df_met['result'].idxmin()
@@ -83,6 +94,9 @@ class Evaluate:
 
 
     def _metrics(self,trajs, beta):
+        """
+        Helper function to calculate metrics (exploration and covergence), returns dataframe containing policies and their respective metrics
+        """
 
         ref_msm = pickle.load(open('ground_truth_msm/best_msm/msm_object_clus400_lag10.pkl','rb'))
 
@@ -106,6 +120,9 @@ class Evaluate:
         return df_met
 
     def _get_zero_data(self):
+        """
+        Helper function to get round 0 data, to be appended to later rounds.
+        """
 
         zero_path = []
         for rep in range(self.num_reps):
@@ -114,7 +131,10 @@ class Evaluate:
         return zero_path 
 
     def _get_data_from_policy_name(self,policy_name):
-
+        """
+        Helper function to get saved data for the selected policy
+        """
+        
         data_path = []
         for rep in range(self.num_reps):
             z = f"{self.root_path}/round{self.round_no}/{policy_name}/trajs/rep{rep}.out"
@@ -123,11 +143,17 @@ class Evaluate:
         return data_path
 
     def _get_policy_name(self, trajs):
+        """
+        Helper function to infer policy name from path to data
+        """
 
         name = trajs[0].split('/')[2]
         return name
 
     def _update_data(self, trajs):
+        """
+        Helper function to update sampled data (append current data to previous best data)
+        """
 
         updated_data = []
         if self.round_no == 1:
@@ -137,10 +163,17 @@ class Evaluate:
         
         return updated_data 
 
-    def _make_msm(self, traj_list,best_lag = 10): #, lag = 10):
+    def _make_msm(self, traj_list,best_lag = 10): 
+        """Creates a Markov State Model
 
-        #lags = np.arange(1, 40, 1)
-        #models = []
+        :param traj_list: Python list.
+            List of trajectory paths.
+        :param best_lag: int.
+            Lagtime for the MSM
+        :return: count model object, MSM object.
+            Count Model from the transition count estimator (as implemented in Deeptime library), MSM object, the fitted MSM from the dtrajs
+        """
+
 
         trajs = list_to_trajs(traj_list)
         clus_path = f'ground_truth_msm/best_msm/clus_400_obj.pkl'
@@ -169,6 +202,9 @@ class Evaluate:
 
 
     def _measure_exploration(self, count_model):
+        """
+        Helper function to calculate exploration
+        """
 
         visited = count_model.visited_set 
         total = count_model.n_states
@@ -177,7 +213,9 @@ class Evaluate:
 
 
     def _rel_entropy(self, ref_msm, test_msm):
-
+        """
+        Helper function to calculate convergence (relative entropy)
+        """
         p = ref_msm.transition_matrix
         q = test_msm.transition_matrix
 
@@ -202,6 +240,9 @@ class Evaluate:
 
 
     def _frob_norm(self, ref_msm, test_msm):
+        """
+        Helper function to calculate convergence (frobenius norm, not used in code)
+        """
 
         p = ref_msm.transition_matrix
         q = test_msm.transition_matrix
@@ -212,6 +253,9 @@ class Evaluate:
 
 
     def _save_msm_matrix(self,policy_name,test_msm):
+        """
+        Helper function to save MSM object as pkl.
+        """
 
         q = test_msm.transition_matrix
         path = f'{self.root_path}/matrix_photos/{policy_name}/'
