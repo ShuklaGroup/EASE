@@ -1,6 +1,6 @@
 # Optimizing Adaptive Sampling via Policy Ranking
 
-This repository contains the **code implementation** for the paper:  
+Code for ensemble ranking-based adaptive sampling. This repository contains the **code implementation** for the paper:  
 **[Optimizing Adaptive Sampling via Policy Ranking](https://arxiv.org/pdf/2410.15259)**  
 *(arXiv:2410.15259v1 [q-bio.BM], October 20, 2024)*  
 ![Framework Overview](figures/fig_2.png)
