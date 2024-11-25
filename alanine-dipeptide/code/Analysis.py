@@ -21,7 +21,7 @@ import re
 
 class Evaluate:
     """
-    evaluation class for each round of sampling
+    Evaluation class for each round of sampling
     """
 
     best_policy_list = []
@@ -39,8 +39,18 @@ class Evaluate:
 
 
     def rank_policies(self,feat_paths,beta=0.5):
+        """Rank Policies.
 
-        #print("================",feat_paths)
+        :param feat_list: Python list.
+            List containing paths to features (dihedrals) pickles.
+        :param beta: float. default = 0.5.
+            Beta parameter to control balance between exploration and convergence 
+
+        :return  best_data_list, best_round_data, df_met: Python tuple.
+            List containing data appended from all previous rounds, data sampled from the best (chosen) policy, pandas dataframe containing the results of the ranked policies
+            
+        """    
+
         df_met = self._metrics(feat_paths,beta)
         self.best_policy_name = df_met['result'].idxmin()
         self.__class__.best_policy_list.append(self.best_policy_name)
@@ -49,12 +59,12 @@ class Evaluate:
         self._prepare_next_round(feat_list=self.best_round_data)
         self._return_traj_list(self.__class__.best_policy_list)
 
-        #print(self.__class__.best_data_list, self.best_round_data, df_met)
-
         return self.__class__.best_data_list, self.best_round_data, df_met
 
     def _return_traj_list(self,best_policy_list):
-
+        """
+        Helper function to get round 0 saved data and append to list of best data, including the current best data
+        """
         zero_list = []
         for rep in range(self.num_reps):
             path =  f"{self.root_path}/round0/trajs/rep{rep}.dcd"
@@ -80,10 +90,10 @@ class Evaluate:
         self.__class__.best_data_list.extend(result)
          
 
-
-
     def _metrics(self,feat_paths, beta):
-
+        """
+        Helper function to calculate metrics (exploration and covergence), returns dataframe containing policies and their respective metrics
+        """
         ref_msm = pickle.load(open('ground_truth_msm/best_msm/msm_object_clus300_lag5.pkl','rb'))
 
         met_dict = {}
@@ -108,10 +118,16 @@ class Evaluate:
 
 
     def _get_policy_name(self, feat_path):
+        """
+        Helper function to infer policy name from feature path.
+        """
         name = feat_path[0].split('/')[2]
         return name    
  
     def _update_data(self, feat_paths):
+        """
+        Append best policy feature data to previous best data list
+        """
 
         updated_data = []
         if self.round_no == 1:
@@ -122,13 +138,26 @@ class Evaluate:
         return updated_data 
 
     def _get_zero_data(self):
+        """
+        Helper function to get round 0 data, to be appended to later rounds.
+        """
+
         zero_path=[]
         z = f"{self.root_path}/round0/trajs/round0.ft"
         zero_path.append(z)
         return zero_path 
 
 
-    def _make_msm(self, feat_path_list,best_lag = 15): #, lag = 10):
+    def _make_msm(self, feat_path_list,best_lag = 15):
+        """Creates a Markov State Model
+
+        :param feat_path_list: Python list.
+            List of featurized trajectory paths.
+        :param best_lag: int.
+            Lagtime for the MSM
+        :return: count model object, MSM object.
+            Count Model from the transition count estimator (as implemented in Deeptime library), MSM object, the fitted MSM from the dtrajs
+        """
 
         lags = np.arange(1, 40, 1)
         models = []
@@ -162,6 +191,9 @@ class Evaluate:
         return count_model , msm
 
     def _measure_exploration(self, count_model):
+        """
+        Helper function to calculate exploration
+        """
 
         visited = count_model.visited_set 
         total = count_model.n_states
@@ -169,7 +201,9 @@ class Evaluate:
         return np.round(len(visited) / total, 3)
 
     def _rel_entropy(self, ref_msm, test_msm):
-
+        """
+        Helper function to calculate convergence (relative entropy)
+        """
         p = ref_msm.transition_matrix
         q = test_msm.transition_matrix
 
@@ -193,6 +227,9 @@ class Evaluate:
         return np.sum(ent)
 
     def _frob_norm(self, ref_msm, test_msm):
+        """
+        Helper function to calculate convergence (frobenius norm, not used in code)
+        """
 
         p = ref_msm.transition_matrix
         q = test_msm.transition_matrix
@@ -202,6 +239,9 @@ class Evaluate:
         return LA.norm(diff_mat)
 
     def _save_msm_matrix(self,policy_name,test_msm):
+        """
+        Helper function to save MSM object as pkl.
+        """
 
         q = test_msm.transition_matrix
         path = f'{self.root_path}/matrix_photos/{policy_name}/'
