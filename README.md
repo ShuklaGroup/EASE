@@ -12,3 +12,6 @@ This work introduces a **modular framework** for adaptive sampling, utilizing **
 - **Versatility:** Integrates any adaptive sampling policy, making it highly flexible and modular.
 - **On-the-Fly Algorithms:** Includes novel algorithms to approximate ranking and decision-making during simulations.
 
+
+## Usage:
+Coming soon...
