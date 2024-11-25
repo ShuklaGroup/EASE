@@ -1,5 +1,5 @@
 """
-Definition of Policy classes for Adaptive Sampling
+Definition of Policy class for EASE Adaptive Sampling
 """
 import pickle
 import numpy as np
@@ -35,7 +35,7 @@ from kmc_main_betas import kmc_run
 
 class Gradient:
     """
-    class to rank policies on the fly using gradient approach
+    class to rank policies on the fly using EASE approach  (referred to here as gradient)
     """
 
     def __init__(self, root_path, round_no,kmc_beta):
@@ -43,11 +43,20 @@ class Gradient:
         self.round_no = round_no
 
         self.kmc_beta = kmc_beta
-        print("Imma run kmc now")
 
 
     def get_policy(self,old,new):
+        """
+        Gets the best policy using kMC trajectories
         
+        :param old: Python list.
+            List containing paths to feature/trajectory pickles upto round i-2.  
+        :param new: Python list.
+            List containing paths to feature/trajectory pickles upto round i-1.  
+            
+        :return  best_name: str.
+            name of policy deemed to be best to go from round i-2 to round i-1       
+        """
         msm_path = self._make_msm(new=new)
         best_name = kmc_run(root_path=str(self.root_path + "_kmc"),msm_path=msm_path,steps=120,old=old, beta=self.kmc_beta)
 
@@ -57,13 +66,11 @@ class Gradient:
     def _make_msm(self,new,lag=1):
         '''
         Makes msm for current round data
+        :param new: Python list.
+            List containing paths to feature/trajectory pickles upto round i-1.  
 
-        :param feat_path: Python list.
-            List containing paths to feature pickles upto round i-1.  
-
-
-        :return  dtrajs: Python list.
-            clustered trajectories
+        :return msm_path: str.
+            Path to saved MSM pickle.
         '''
 
         dtrajs = list_to_trajs(new)
@@ -72,7 +79,7 @@ class Gradient:
         unique_clusters, _ = np.unique(all_dtrajs, return_counts=True)
 
 
-        enforce_states = 150 # this can be any reasonable number, wouldnot matter in a real system
+        enforce_states = 150 # this can be any reasonable number, would not matter in a real system (this might also be scaled w.r.t number of frames, gives identical performance in experiments
         count_model = TransitionCountEstimator(lagtime = lag,count_mode = 'sliding', n_states = enforce_states).fit_fetch(dtrajs)
         msm = MaximumLikelihoodMSM(allow_disconnected = True).fit_from_counts(count_model.count_matrix + (1/enforce_states)).fetch_model()
         
