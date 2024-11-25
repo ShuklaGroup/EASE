@@ -117,6 +117,10 @@ class ToySimulation:
         return clus_path, d_path
 
     def plot_trajs(self, trajs):
+
+        """
+        Helper function to plot trajectories, might need some tinkering
+        """
         system = self.model
         trajs = [pickle.load(open(f,'rb')) for f in trajs]
 
@@ -158,6 +162,10 @@ class ToySimulation:
         plt.show()
 
     def plot_trajs_animation(self, trajs):
+
+        """
+        Helper function to animate trajectories, might need some tinkering
+        """
         system = self.model
         trajs = [pickle.load(open(f, 'rb')) for f in trajs]
 
