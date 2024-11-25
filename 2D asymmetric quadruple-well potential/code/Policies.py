@@ -285,7 +285,7 @@ class LambdaSampling(LeastCounts):
         self.policy_name = "LambdaSampling"
 
     def _select_states(self, clus, traj_list, states):
-        """Select states according to Random Sampling policy
+        """Select states according to Lambda Sampling policy
 
         :param clus: str.
             Path to clustering object pickles.
@@ -312,7 +312,17 @@ class LambdaSampling(LeastCounts):
         return selected_states 
 
 
-    def _make_msm(self, dtrajs, best_lag = 10): #, lag = 10):
+    def _make_msm(self, dtrajs, best_lag = 10):
+        
+        """Creates a Markov State Model
+
+        :param dtrajs: Python list.
+            Discretized trajectories.
+        :param best_lag: int.
+            Lagtime for the MSM
+        :return: count model object, MSM object.
+            Count Model from the transition count estimator (as implemented in Deeptime library), MSM object, the fitted MSM from the dtrajs
+        """
 
         #lags = np.arange(1, 40, 1)
         #models = []
@@ -337,6 +347,9 @@ class LambdaSampling(LeastCounts):
         return count_model , msm
 
     def _calculate_best_state(self,cm,msm):
+        """
+        Helper function to calculate idx of the state contributing most to the uncertainity (see publication)
+        """
 
         t_ij = msm.transition_matrix
         num_states = t_ij.shape[0]
