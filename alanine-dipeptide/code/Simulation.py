@@ -1,5 +1,5 @@
 """
-Definition of a simulation class for toy potential
+Definition of a simulation class for alanine dipeptide
 """
 import numpy as np
 import os
@@ -103,6 +103,9 @@ class ToySimulation:
 
  
     def _compute_dihedral_features(self,traj):
+        """
+        Helper function to compute dihedrals (uses MDTraj library)
+        """
         phi = md.compute_phi(traj)[1].reshape(-1, 1)
         psi = md.compute_psi(traj)[1].reshape(-1, 1)
         dihedral_features = np.concatenate((phi, psi), axis=1)
@@ -111,6 +114,9 @@ class ToySimulation:
 
 
     def _compute_dihedral_features_for_trajectories(self,traj_list):
+        """
+        Helper function to append computed dihedrals for the whole trajectory list.
+        """
         dihedral_features_list = []
         for traj_file in traj_list:
             traj = md.load(traj_file, top=self.top_file)
@@ -120,6 +126,20 @@ class ToySimulation:
 
 
     def get_initial_data(self,num_reps,save_rate,velocities=None,positions=None):
+        """ Get initial data (intended for round 0).
+
+        :param num_reps: int.
+            Number of replicates to run    
+        :param save_rate: int.
+            Frame save rate
+        :param veclocities: Vec3 (OpenMM).
+            Velocities to initialize (not used)    
+        :param veclocities: Vec3 (OpenMM).
+           Positions to initialize (not used)    
+        :return: Python list.
+            List of path to trajectories
+        """
+
         traj_list = []
         for rep in tqdm(range(num_reps)):
             traj = self._run_single(save_rate=save_rate,rep=rep,velocities=velocities,positions=positions)
@@ -136,9 +156,8 @@ class ToySimulation:
             Number of replicates to run    
         :return  clus_path, d_path: Python tuple.
             Path to cluster object, path to dtraj
-    
-            
-            """    
+        
+        """    
         vol = (self.round_no + 1)*num_reps * self.n_steps  
         c = int(np.sqrt(vol))
 
