@@ -14,9 +14,21 @@ import sys
 
 
 def kmc_run(root_path,msm_path,steps,old,beta):
-    '''
-    test
-    '''
+        """ Gets the best policy according to EASE
+
+        :param root_path: str.
+            Path to save the data
+        :param msm_path: str.
+            Path to saved MSM (because these are kMC trajectories, which require a kinetic model for generation)
+        :param steps: int.
+            Number of steps to run.
+        :param old: Python list.
+            List containing paths to feature/trajectory pickles upto round i-2.  
+        :param beta: float.
+            Beta for choosing convergence vs exploration in kMC space
+        :return most_common_name,policies[most_common_name]: Python tuple
+            Best policy name (str), best policy (adaptive sampling class object)
+        """
     policies = {
     'LeastCounts': 0,
     'RandomSampling': 1,
