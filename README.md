@@ -25,25 +25,25 @@ The code implements the **policy ranking** framework described in the paper. Her
 ### **Core Scripts**  
 #### **`Simulation.py`**: Implements the simulation class for the physical system.  
 - **Class: `ToySimulation`**  
-  - **`get_initial_data`**: Generates initial simulation (round=0) data for the system.  
-  - **`cluster`**: Performs clustering of the trajectory data.  
-  - **`plot_trajs`**: Plots trajectories for the 2D potential.  
+  - **`get_initial_data()`**: Generates initial simulation (round=0) data for the system.  
+  - **`cluster()`**: Performs clustering of the trajectory data.  
+  - **`plot_trajs()`**: Plots trajectories for the 2D potential.  
 
 #### **`Policies.py`**: Contains implementations of the adaptive sampling policies.  
 - **Class: `LeastCounts`**  
-  - **`_center_states`**: Creates a dictionary of representative states. In simpler words, it defines which states belong to which cluster.  
-  - **`_select_states`**: Implements the algorithm logic; for Least Counts, it chooses the index of the least visited states.  
-  - **`get_states`**: Converts the chosen state indices to states.  
-  - **`generate_data`**: Generates trajectory data for the system.  
+  - **`_center_states()`**: Creates a dictionary of representative states. In simpler words, it defines which states belong to which cluster.  
+  - **`_select_states()`**: Implements the algorithm logic; for Least Counts, it chooses the index of the least visited states.  
+  - **`get_states()`**: Converts the chosen state indices to states.  
+  - **`generate_data()`**: Generates trajectory data for the system.  
 - **Class: `RandomPolicy`**  
 - **Class: `LambdaSampling`**  
 
-> **Note:** Both `RandomPolicy` and `LambdaSampling` (subclasses) inherit from `LeastCounts` (parent class). Therefore, only **`_select_states`** needs to be implemented for these classes, along with any necessary helper routines.  
+> **Note:** Both `RandomPolicy` and `LambdaSampling` (subclasses) inherit from `LeastCounts` (parent class). Therefore, only **`_select_states()`** needs to be implemented for these classes, along with any necessary helper routines.  
 
 #### **`Analysis.py`**: Implements the analysis class for the system.  
 - **Class: `Evaluate`**  
-  - **`_measure_exploration`**: Computes the exploration metric (ratio of visited states to the total number of states).  
-  - **`_rel_entropy`**: Implements relative entropy as in Eq. (3) of the paper.  
-  - **`_make_msm`**: Constructs a Markov state model at each round for comparison with the ground truth model. The number of states is enforced to ensure consistency, and a uniform prior is added.  
-  - **`_metrics`**: Compiles metrics and implements the objective function according to the beta value (exploitation vs. exploration).  
-  - **`rank_policies`**: Ranks the policies using the previously defined routines.  
+  - **`_measure_exploration()`**: Computes the exploration metric (ratio of visited states to the total number of states).  
+  - **`_rel_entropy()`**: Implements relative entropy as in Eq. (3) of the paper.  
+  - **`_make_msm()`**: Constructs a Markov state model at each round for comparison with the ground truth model. The number of states is enforced to ensure consistency, and a uniform prior is added.  
+  - **`_metrics()`**: Compiles metrics and implements the objective function according to the beta value (exploitation vs. exploration).  
+  - **`rank_policies()`**: Ranks the policies using the previously defined routines.  
