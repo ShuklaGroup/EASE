@@ -47,9 +47,23 @@ The code implements the **policy ranking** framework described in the paper. Her
   - **`_make_msm()`**: Constructs a Markov state model at each round for comparison with the ground truth model. The number of states is enforced to ensure consistency, and a uniform prior is added.  
   - **`_metrics()`**: Compiles metrics and implements the objective function according to the beta value (exploitation vs. exploration).  
   - **`rank_policies()`**: Ranks the policies using the previously defined routines.
+    
+#### **`Utils.py`**: Contains auxillary/helper routines.
 
 ## **Quick Start Guide**  
-To run a single adaptive sampling policy, e.g **Least Counts**
+In order to run a single adaptive sampling policy, e.g **Least Counts**, the following script can be used.
+### **Simulation Parameters**
+- **ROOT_PATH`** : str., This is the path for the root directory, all trajectory and subsequently generated files will be saved in subdirectories. 
+- **REPLICATES`**: int., Number of short trajectories to be run per round of adaptive sampling 
+- **STEPS`**: int., length of single trajectory
+- **ROUNDS`** range obj/list, number of adaptive sampling rounds per run 
+- **ROUND_REPS`**: number of runs, these are overall replicates
+For e.g. If you want to run 5 trajectories per round, with 50 steps per trajectory. And you want to do this for a total of 20 adaptive sampling rounds, and you want to do this 10 times to get error quantification, then:
+- **REPLICATES`**: 5
+- **STEPS`**: 50
+- **ROUNDS`** range(2, 200,1)   
+- **ROUND_REPS`**: 10
+
 ```python
 from Simulation import ToySimulation
 from Policies import LeastCounts
