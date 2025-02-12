@@ -46,4 +46,9 @@ The code implements the **policy ranking** framework described in the paper. Her
   - **`_rel_entropy()`**: Implements relative entropy as in Eq. (3) of the paper.  
   - **`_make_msm()`**: Constructs a Markov state model at each round for comparison with the ground truth model. The number of states is enforced to ensure consistency, and a uniform prior is added.  
   - **`_metrics()`**: Compiles metrics and implements the objective function according to the beta value (exploitation vs. exploration).  
-  - **`rank_policies()`**: Ranks the policies using the previously defined routines.  
+  - **`rank_policies()`**: Ranks the policies using the previously defined routines.
+
+## **Quick Start Guide**  
+```ruby
+adrija = candidate
+```
