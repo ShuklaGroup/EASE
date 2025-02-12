@@ -13,7 +13,7 @@ This work introduces a **modular framework** for adaptive sampling, utilizing **
 - **On-the-Fly Algorithms:** Includes novel algorithms to approximate ranking and decision-making during simulations.
 
 
-## **Code Description**  
+## **Code Description (Policy Ranking)**  
 The code implements the **policy ranking** framework described in the paper. Here, we describe the source files, the classes implemented, and major routines for the benefit of the users, in the context of the 2D potentials.  
 
 ### **Sampling Scripts**  
