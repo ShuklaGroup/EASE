@@ -173,7 +173,7 @@ for BETA in betas:
     pickle.dump(tot_list,open(f'{ROOT_PATH}/analysis/tot2_{BETA}.pkl','wb'))  
     pickle.dump(name_list,open(f'{ROOT_PATH}/analysis/name2_{BETA}.pkl','wb'))   
 ```
-To run single policies, for e.g. Least Counts, single policy scripts can be run, i.e. **`single_LC`**. The only difference is that single policy scripts only contain simulation and ranking(redundant) of that particular policy.
+To run single policies, for e.g. Least Counts, single policy scripts can be run, i.e. **`single_LC.py`**. The only difference is that single policy scripts only contain simulation and ranking(redundant) of that particular policy.
 
 
 
