@@ -1,4 +1,5 @@
-# Optimizing Adaptive Sampling via Policy Ranking
+# Ensemble Adaptive Sampling Scheme: Identifying Optimal Sampling Strategy via Policy Ranking 
+
 
 Code for ensemble ranking-based adaptive sampling. This repository contains the **code implementation** for the paper:  
 **[Optimizing Adaptive Sampling via Policy Ranking](https://arxiv.org/pdf/2410.15259)**  
