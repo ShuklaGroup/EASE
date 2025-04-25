@@ -2,8 +2,8 @@
 
 
 Code for ensemble ranking-based adaptive sampling. This repository contains the **code implementation** for the paper:  
-**[Optimizing Adaptive Sampling via Policy Ranking](https://arxiv.org/pdf/2410.15259)**  
-*(arXiv:2410.15259v1 [q-bio.BM], October 20, 2024)*  
+**[Ensemble Adaptive Sampling Scheme: Identifying an Optimal Sampling Strategy via Policy Ranking](https://pubs.acs.org/doi/10.1021/acs.jctc.4c01488)**  
+
 ![Framework Overview](figures/fig_2.png)
 This work introduces a **modular framework** for adaptive sampling, utilizing **metric-driven ranking** to dynamically identify the most effective sampling policies. By systematically evaluating and ranking an ensemble of policies, this approach enables **policy switching across rounds**, significantly improving convergence speed and sampling performance.
 
